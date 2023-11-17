@@ -1,3 +1,4 @@
+ import type { Request } from "express";
  export enum HttpStatusCode {
     Continue = 100,
     SwitchingProtocols = 101,
@@ -66,3 +67,6 @@
     NetworkAuthenticationRequired = 511,
   }
 
+export interface IRequest extends Request{
+  userId: string
+}

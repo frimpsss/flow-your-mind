@@ -1,11 +1,11 @@
 export default class CustomResponse<T> {
   statusCode: number;
   message: string;
-  data: T | undefined;
+  data: T | null;
   constructor(
     statusCode: number,
     message: string = "Operation succesful",
-    data: T | undefined = undefined
+    data: T | null = null
   ) {
     this.statusCode = statusCode;
     this.message = message;

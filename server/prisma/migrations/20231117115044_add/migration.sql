@@ -1,8 +1,9 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "userName" TEXT NOT NULL,
-    "password" TEXT NOT NULL
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "tokens" TEXT[] DEFAULT ARRAY[]::TEXT[]
 );
 
 -- CreateTable
@@ -17,7 +18,7 @@ CREATE TABLE "Message" (
 CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_userName_key" ON "User"("userName");
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Message_id_key" ON "Message"("id");

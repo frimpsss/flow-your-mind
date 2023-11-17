@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 const salt_rounds = 10
 export async function hashPassword(password: string){
     try {
@@ -16,4 +17,15 @@ export async function isCorrectPassword(plain_password: string, hashed_password:
     } catch (error: any) {
         throw new Error(error)
     }
+}
+
+export function createAccessToken(payload: string){
+    return jwt.sign({userId: payload}, process.env.ACCESS_TOKEN_SECRET as string, {
+        expiresIn: '1d'
+    })
+}
+export function createRefreshToken(payload: string){
+    return jwt.sign({userId: payload}, process.env.REFRESH_TOKEN_SECRET as string, {
+        expiresIn: '15d'
+    })
 }

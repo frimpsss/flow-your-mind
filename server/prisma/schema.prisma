@@ -15,6 +15,7 @@ model User {
   username String    @unique
   password String
   messages Message[]
+  tokens   String[] @default([])
 }
 
 model Message {
