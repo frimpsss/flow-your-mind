@@ -5,6 +5,7 @@ import { HttpStatusCode, corsOptions } from "./utils";
 import { authRouter } from "./auth/auth.routes";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { decryptText, encryptText } from "./services/encryption.service";
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,7 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
     message: "Route not found",
   });
 });
+
 app.listen(port, () => {
   console.log(`Server up and spinning on port: ${port}`);
 });
