@@ -21,7 +21,7 @@ export async function isCorrectPassword(plain_password: string, hashed_password:
 
 export function createAccessToken(payload: string){
     return jwt.sign({userId: payload}, process.env.ACCESS_TOKEN_SECRET as string, {
-        expiresIn: '1d'
+        expiresIn: '10m'
     })
 }
 export function createRefreshToken(payload: string){
