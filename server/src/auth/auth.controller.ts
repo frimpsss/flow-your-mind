@@ -233,9 +233,9 @@ export class AuthController {
             tokens: newTokens,
           },
         });
+        return new CustomResponse(HttpStatusCode.Forbidden, "JWT malfunctioned");
       }
 
-      return new CustomResponse(HttpStatusCode.Forbidden, "JWT malfunctioned");
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
