@@ -1,0 +1,1 @@
+export {RegisterComponent} from './register/index'
