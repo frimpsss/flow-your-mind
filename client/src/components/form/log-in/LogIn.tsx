@@ -1,17 +1,16 @@
-"use client";
+"usse client"
+import React from 'react'
+import { useFormik } from 'formik';
+import { loginSchema } from './schema';
+import { TextInput } from '@/components';
 
-import React from "react";
-import { useFormik } from "formik";
-import { RegisterSchema } from "./schema";
-import { TextInput } from "@/components";
-const Register = () => {
+const LogIn = () => {
   const { handleSubmit, ...rest } = useFormik({
     initialValues: {
       username: "",
       password: "",
-      confirmPassword: "",
     },
-    validationSchema: RegisterSchema,
+    validationSchema: loginSchema,
     onSubmit: (values) => {},
   });
   return (
@@ -28,24 +27,15 @@ const Register = () => {
         placeholder="password"
         label="Password"
         type={"password"}
-        strongPassword
         {...rest}
       />
-      <TextInput
-        id="confirmPassword"
-        placeholder="Confirm password"
-        label="Confirm Password"
-        type={"password"}
-        // strongPassword
-        {...rest}
-      />
-      <input
+            <input
         type="submit"
-        value={"register"}
+        value={"log in"}
         className="border-2 py-3 bg-primary/90 text-white rounded-md font-bold mt-3 hover:bg-primary duration-500 cursor-pointer"
       />
     </form>
-  );
-};
+  )
+}
 
-export default Register;
+export default LogIn

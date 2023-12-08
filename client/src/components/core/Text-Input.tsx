@@ -45,7 +45,7 @@ const TextInput = ({
           value={values[id]}
           onChange={(e) => {
             setVisibile(true);
-            touched[id] = true
+            touched[id] = true;
             handleChange(e);
           }}
           onBlur={handleBlur}
@@ -74,11 +74,21 @@ const TextInput = ({
             {!showPassword ? (
               <EyeIcon className="h-5 w-5 text-primary" aria-hidden="true" />
             ) : (
-              <EyeSlashIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+              <EyeSlashIcon
+                className="h-5 w-5 text-primary"
+                aria-hidden="true"
+              />
             )}
           </div>
         )}
       </div>
+
+      {errors[id] && touched[id] ? (
+        <p className="mt-2 text-sm text-red-600" id={`${id}-error`}>
+          {errors[id]}
+        </p>
+      ) : null}
+
       {type === "password" && visible && strongPassword && (
         <PasswordStrenghtIndicator
           password={values[id]}
@@ -86,11 +96,6 @@ const TextInput = ({
           visible={visible}
         />
       )}
-      {errors[id] && touched[id] && !strongPassword ? (
-        <p className="mt-2 text-sm text-red-600" id={`${id}-error`}>
-          {errors[id]}
-        </p>
-      ) : null}
     </div>
   );
 };

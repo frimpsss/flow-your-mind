@@ -36,7 +36,7 @@ const PasswordIndicator = ({
     },
   ];
   return (
-    <div className="">
+    <div className="mt-2">
       {tests.map((e) => {
         return (
           <div className={`${visible ? "block" : "none"}`}>
