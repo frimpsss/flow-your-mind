@@ -1,0 +1,1 @@
+export {default as LogInComponent} from './LogIn'

@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { AuthController } from "./auth.controller";
 import { HttpStatusCode } from "../utils";
 import { loginResponse } from "./types";
+import { prisma } from "../../prisma";
 
 export const authRouter = express.Router();
 const controller = new AuthController();
@@ -19,20 +20,48 @@ authRouter.post("/login", async (req: Request, res: Response) => {
   const response = await controller.login({
     username: req.body.username,
     password: req.body.password,
+    token: req.cookies?.auth,
   });
-
   if (response.statusCode === HttpStatusCode.Ok) {
-    const { access_token } = response.data as loginResponse;
+    const { refresh_token, username, access_token } =
+      response.data as loginResponse;
     return res
-      .cookie("authorization", access_token, {
-        httpOnly: process.env.NODE_ENV === "development",
-        maxAge: 86400000,
+      .cookie("auth", refresh_token, {
+        httpOnly: process.env.NODE_ENV != "development",
+        maxAge: 60 * 60 * 60,
         sameSite: "strict",
         path: "/",
+        secure: process.env.NODE_ENV != "development",
       })
       .status(response.statusCode)
-      .send(response);
+      .send({
+        access_token,
+        username,
+      });
   }
+  res.clearCookie("auth");
+  return res.status(response.statusCode).send(response);
+});
 
+authRouter.get("/refresh", async (req: Request, res: Response) => {
+  const cookie = req.cookies?.auth;
+  if (!cookie) {
+    return res.send("No cookie");
+  }
+  const response = await controller.getAccessToken(cookie);
+  if (response.statusCode == HttpStatusCode.Ok) {
+    return res
+      .cookie("auth", response?.data?.new_refresh_token, {
+        httpOnly: process.env.NODE_ENV != "development",
+        maxAge: 60 * 60 * 60,
+        sameSite: "strict",
+        path: "/",
+        secure: process.env.NODE_ENV != "development",
+      })
+      .status(response.statusCode)
+      .send({
+        access_token: response?.data?.access_token,
+      });
+  }
   return res.status(response.statusCode).send(response);
 });

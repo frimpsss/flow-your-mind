@@ -5,7 +5,7 @@ import { HttpStatusCode, corsOptions } from "./utils";
 import { authRouter } from "./auth/auth.routes";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { decryptText, encryptText } from "./services/encryption.service";
+import { messageRouter } from "./messages/message.routes";
 
 dotenv.config();
 const app = express();
@@ -18,7 +18,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(cors(corsOptions));
-app.use("/api", authRouter);
+app.use("/api", authRouter, messageRouter);
 app.all("/", (req: Request, res: Response) => {
   return res.status(HttpStatusCode.Ok).send("Flow your mind API");
 });
