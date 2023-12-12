@@ -37,9 +37,9 @@ const PasswordIndicator = ({
   ];
   return (
     <div className="mt-2">
-      {tests.map((e) => {
+      {tests.map((e, inx) => {
         return (
-          <div className={`${visible ? "block" : "none"}`}>
+          <div className={`${visible ? "block" : "none"}`} key={inx}>
             <PasswordStrenghtTile
               text={e.title}
               passed={e.passed}
