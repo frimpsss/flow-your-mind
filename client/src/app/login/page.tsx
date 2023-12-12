@@ -3,7 +3,7 @@ import { LogIn } from "@/containers";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   return (
     <div className="grid grid-cols-12 place-content-center  px-4 relative pt-[5rem]  md:pt-[7rem]">
@@ -30,4 +30,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
