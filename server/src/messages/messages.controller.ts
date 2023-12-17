@@ -2,7 +2,6 @@ import { CustomResponse, HttpStatusCode } from "../utils";
 import { prisma } from "../../prisma";
 import { encryptText } from "../services/encryption.service";
 import { MessageDTO } from "./message.utils";
-import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 export class MessageController {
   /**
    * create Message
@@ -13,7 +12,7 @@ export class MessageController {
   ): Promise<CustomResponse<any | Error>> {
     try {
       const encryptedMessage = encryptText(message);
-      const savedMessage = await prisma.message.create({
+      await prisma.message.create({
         data: {
           content: encryptedMessage,
           reciepientId: id,
@@ -22,12 +21,13 @@ export class MessageController {
       return new CustomResponse(
         HttpStatusCode.Created,
         "Message sent succesfully",
-        savedMessage
+        true
       );
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
-        error?.message
+        error?.message,
+        false
       );
     }
   }
@@ -44,11 +44,12 @@ export class MessageController {
 
       const d = messages.map((e) => new MessageDTO(e));
 
-      return new CustomResponse(HttpStatusCode.Ok, "all messages retrieved", d);
+      return new CustomResponse(HttpStatusCode.Ok, "all messages retrieved",true, d);
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
-        error?.message
+        error?.message, 
+        false
       );
     }
   }
@@ -58,7 +59,7 @@ export class MessageController {
   ): Promise<CustomResponse<string | Error>> {
     try {
       if (!username.trim()) {
-        return new CustomResponse(HttpStatusCode.BadRequest, "Pass username");
+        return new CustomResponse(HttpStatusCode.BadRequest, "Pass username", false);
       }
       const founduser = await prisma.user.findUnique({
         where: {
@@ -66,14 +67,15 @@ export class MessageController {
         },
       });
       if (!founduser) {
-        return new CustomResponse(404, "Username not found");
+        return new CustomResponse(404, "Username not found", false);
       }
 
-      return new CustomResponse(HttpStatusCode.Ok, founduser.id);
+      return new CustomResponse(HttpStatusCode.Ok, "User id retrieved", true, founduser.id);
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
-        error?.message
+        error?.message,
+        false
       );
     }
   }

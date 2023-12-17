@@ -2,8 +2,8 @@ import { CustomResponse } from "../utils";
 import { prisma } from "../../prisma";
 import { authRequestBody, loginResponse } from "./types";
 import { HttpStatusCode } from "../utils";
-import { authInputSchema } from "./auth.utils";
-import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
+import { authInputSchema, loginSchema } from "./auth.utils";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
 import {
   createAccessToken,
@@ -11,7 +11,6 @@ import {
   hashPassword,
   isCorrectPassword,
 } from "./auth.service";
-import { error } from "console";
 
 export class AuthController {
   // register
@@ -32,7 +31,8 @@ export class AuthController {
       if (founduser) {
         return new CustomResponse(
           HttpStatusCode.Conflict,
-          "Username already taken"
+          "Username already taken",
+          false
         );
       }
       const hashed_password = await hashPassword(password);
@@ -42,18 +42,20 @@ export class AuthController {
           password: hashed_password,
         },
       });
-      return new CustomResponse(HttpStatusCode.Created, "Sign up succesful");
+      return new CustomResponse(HttpStatusCode.Created, "Sign up succesful", true);
     } catch (error: any) {
       if (error instanceof z.ZodError) {
         return new CustomResponse(
           HttpStatusCode.BadRequest,
           error.message,
+          false,
           error as Error
         );
       }
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
         error?.message as string,
+        false,
         error as Error
       );
     }
@@ -66,7 +68,7 @@ export class AuthController {
     token,
   }: authRequestBody): Promise<CustomResponse<loginResponse | Error | null>> {
     try {
-      authInputSchema.parse({
+      loginSchema.parse({
         username,
         password,
       });
@@ -79,7 +81,8 @@ export class AuthController {
       if (!founduser) {
         return new CustomResponse(
           HttpStatusCode.NotFound,
-          "Incorrect username or password"
+          "Incorrect username or password",
+          false
         );
       }
 
@@ -90,7 +93,8 @@ export class AuthController {
       if (!isPasswordCorrect) {
         return new CustomResponse(
           HttpStatusCode.BadRequest,
-          "Incorrect username or password"
+          "Incorrect username or password",
+          false
         );
       }
       const refreshToken = createRefreshToken(founduser.id);
@@ -120,7 +124,8 @@ export class AuthController {
           });
           return new CustomResponse(
             HttpStatusCode.Unauthorized,
-            "Something fishy"
+            "Something fishy",
+            false
           );
         }
       }
@@ -133,7 +138,7 @@ export class AuthController {
           tokens: [...newRefreshTokensArray, refreshToken],
         },
       });
-      return new CustomResponse(HttpStatusCode.Ok, "Log in succesful", {
+      return new CustomResponse(HttpStatusCode.Ok, "Log in succesful", true, {
         username: founduser.username,
         access_token: accessToken,
         refresh_token: refreshToken,
@@ -143,12 +148,14 @@ export class AuthController {
         return new CustomResponse(
           HttpStatusCode.BadRequest,
           error.message,
+          false,
           error as Error
         );
       }
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
         error?.message as string,
+        false,
         error as Error
       );
     }
@@ -163,7 +170,7 @@ export class AuthController {
   ): Promise<CustomResponse<any>> {
     try {
       if (!refresh_token.trim()) {
-        return new CustomResponse(401);
+        return new CustomResponse(401, "Error somewhere", false);
       }
       const founduser = await prisma.user.findFirst({
         where: {
@@ -199,7 +206,7 @@ export class AuthController {
             }
           }
         );
-        return new CustomResponse(HttpStatusCode.Forbidden, "Invalid token");
+        return new CustomResponse(HttpStatusCode.Forbidden, "Invalid token", false);
       }
       try {
         const { userId } = jwt.verify(
@@ -219,7 +226,7 @@ export class AuthController {
           },
         });
 
-        return new CustomResponse(HttpStatusCode.Ok, undefined, {
+        return new CustomResponse(HttpStatusCode.Ok, undefined,true, {
           access_token,
           new_refresh_token,
         });
@@ -233,13 +240,14 @@ export class AuthController {
             tokens: newTokens,
           },
         });
-        return new CustomResponse(HttpStatusCode.Forbidden, "JWT malfunctioned");
+        return new CustomResponse(HttpStatusCode.Forbidden, "JWT malfunctioned", false);
       }
 
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
-        error?.message
+        error?.message, 
+        false
       );
     }
   }

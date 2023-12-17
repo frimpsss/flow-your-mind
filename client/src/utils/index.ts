@@ -10,8 +10,8 @@ export function passwordTest(password: string): {
   const lowercaseLetter = /(?=.*[a-z])/;
   const uppercaseLetter = /(?=.*[A-Z])/;
   const digit = /(?=.*\d)/;
-  const specialCharacter = /(?=.*[!@#$%^&*])/;
-  const lengthRequirement = /[A-Za-z\d!@#$%^&*]{8,}/;
+  const specialCharacter = /[^a-zA-Z0-9]/;
+  const lengthRequirement = /^.{8,}$/;
 
   if (lowercaseLetter.test(password)) {
     score += 1;
@@ -38,3 +38,5 @@ export function passwordTest(password: string): {
     lengthRequirement: lengthRequirement.test(password),
   };
 }
+
+export {_} from './api'

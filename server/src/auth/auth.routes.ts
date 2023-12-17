@@ -23,7 +23,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
     token: req.cookies?.auth,
   });
   if (response.statusCode === HttpStatusCode.Ok) {
-    const { refresh_token, username, access_token } =
+    const { refresh_token, username, access_token,  } =
       response.data as loginResponse;
     return res
       .cookie("auth", refresh_token, {
@@ -37,6 +37,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       .send({
         access_token,
         username,
+        status: response.status
       });
   }
   res.clearCookie("auth");
@@ -61,6 +62,7 @@ authRouter.get("/refresh", async (req: Request, res: Response) => {
       .status(response.statusCode)
       .send({
         access_token: response?.data?.access_token,
+        status: response.status
       });
   }
   return res.status(response.statusCode).send(response);
