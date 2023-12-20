@@ -44,11 +44,16 @@ export class MessageController {
 
       const d = messages.map((e) => new MessageDTO(e));
 
-      return new CustomResponse(HttpStatusCode.Ok, "all messages retrieved",true, d);
+      return new CustomResponse(
+        HttpStatusCode.Ok,
+        "all messages retrieved",
+        true,
+        d
+      );
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
-        error?.message, 
+        error?.message,
         false
       );
     }
@@ -59,7 +64,11 @@ export class MessageController {
   ): Promise<CustomResponse<string | Error>> {
     try {
       if (!username.trim()) {
-        return new CustomResponse(HttpStatusCode.BadRequest, "Pass username", false);
+        return new CustomResponse(
+          HttpStatusCode.BadRequest,
+          "Pass username",
+          false
+        );
       }
       const founduser = await prisma.user.findUnique({
         where: {
@@ -70,11 +79,81 @@ export class MessageController {
         return new CustomResponse(404, "Username not found", false);
       }
 
-      return new CustomResponse(HttpStatusCode.Ok, "User id retrieved", true, founduser.id);
+      return new CustomResponse(
+        HttpStatusCode.Ok,
+        "User id retrieved",
+        true,
+        founduser.id
+      );
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
         error?.message,
+        false
+      );
+    }
+  }
+
+  public async getSingleMessage(
+    userId: string,
+    messageId: string
+  ): Promise<CustomResponse<any>> {
+    try {
+      if (!userId || !messageId) {
+        return new CustomResponse(
+          HttpStatusCode.BadRequest,
+          "invalid body ",
+          false
+        );
+      }
+
+      const founduser = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          messages: true,
+        },
+      });
+
+      if (!founduser) {
+        return new CustomResponse(
+          HttpStatusCode.BadRequest,
+          "message id incorrect",
+          false
+        );
+      }
+
+      const message = founduser.messages.find((m) => m.id === messageId);
+      if (!message) {
+        return new CustomResponse(
+          HttpStatusCode.BadRequest,
+          "message id incorrect",
+          false
+        );
+      }
+
+      if (!message.isOpened) {
+        await prisma.message.update({
+          where: {
+            id: message.id,
+          },
+          data: {
+            isOpened: true,
+          },
+        });
+      }
+
+      return new CustomResponse(
+        HttpStatusCode.Ok,
+        "message retieved",
+        true,
+        message
+      );
+    } catch (error: unknown) {
+      return new CustomResponse(
+        HttpStatusCode.InternalServerError,
+        error instanceof Error ? error?.message : (error as string),
         false
       );
     }

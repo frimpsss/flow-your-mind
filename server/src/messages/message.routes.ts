@@ -29,3 +29,15 @@ messageRouter.get(
     res.status(response.statusCode).send(response);
   }
 );
+
+messageRouter.get(
+  "/message/:messageId",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const response = await messageController.getSingleMessage(
+      req.body.userId,
+      req.params.messageId
+    );
+    res.status(response.statusCode).send(response);
+  }
+);
