@@ -116,7 +116,7 @@ const AllMessages = () => {
           }}
         >
           {sampleData.map((e, i) => (
-            <MessageBox {...e} />
+            <MessageBox {...e} key={i}/>
           ))}
         </div>
       </div>
