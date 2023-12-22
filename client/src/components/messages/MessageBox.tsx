@@ -12,7 +12,7 @@ function MessageBox({ isOpened, messageId }: MessageBoxProps) {
     <>
       <div
         className="cursor-pointer flex items-center justify-center border-[1px] py-6 border-dotted rounded-lg"
-        onClick={() => router.push(`/message/${messageId}`)}
+        onClick={() => router.push(`/messages/${messageId}`)}
       >
         {!isOpened ? (
           <EnvelopeIcon className="text-primary" height={30} />

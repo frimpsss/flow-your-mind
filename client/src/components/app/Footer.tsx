@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 const Footer = () => {
   const router = useRouter();
   return (
-    <div className="pt-4 pb-4 flex items-center justify-around text-white fixed bottom-0 left-0 right-0 bg-primary">
+    <div className="py-2 flex items-center justify-around text-white fixed bottom-0 left-0 right-0 bg-primary">
       <div
         className="flex items-center justify-center flex-col cursor-pointer"
         onClick={() => {

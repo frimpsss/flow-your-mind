@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import MessageBox from "./MessageBox";
 
@@ -110,7 +111,7 @@ const AllMessages = () => {
       <div className="relative w-full">
         <h4 className="font-semibold text-[1.5rem]">Messages(4)</h4>
         <div
-          className="h-[60svh] fixed overflow-y-scroll gap-2   grid grid-cols-3  pt-4 pb-[20vh] scroll-smooth"
+          className="gap-2   grid grid-cols-3  pt-4 pb-[20vh] scroll-smooth"
           style={{
             width: "calc(100vw - 2rem)",
           }}
