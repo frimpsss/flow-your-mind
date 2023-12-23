@@ -1,4 +1,3 @@
-"use server";
 import Header from "@/components/app/Header";
 import MessageInputBox from "@/components/messages/MessageInputBox";
 import { _ } from "@/utils";
@@ -10,8 +9,9 @@ async function getUserId(username: string) {
     if (response?.data?.status) {
       return response?.data?.data;
     }
-    throw Error(response?.data?.message);
   } catch (error: unknown) {
+    console.log("error:  "+error);
+    
     throw error;
   }
 }

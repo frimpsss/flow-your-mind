@@ -7,7 +7,9 @@
     "test": "jest",
     "dev": "npx tsc && nodemon",
     "prestart": "npx tsc",
-    "start": "node dist/src/index.js"
+    "build": "npx tsc",
+    "start": "node dist/src/index.js",
+    "prod:db": "npx prisma migrate deploy"
   },
   "prisma.schema": "prisma/schema.prisma",
   "keywords": [],
