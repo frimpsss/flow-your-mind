@@ -3,23 +3,28 @@ import Header from "@/components/app/Header";
 import MessageInputBox from "@/components/messages/MessageInputBox";
 import { _ } from "@/utils";
 import React from "react";
-const Page = async ({ params }: { params: { username: string } }) => {
+
+async function getUserId(username: string) {
   try {
-    const response = await _.get(`/username/${params.username}`);
+    const response = await _.get(`/username/${username}`);
     if (response?.data?.status) {
-      return (
-        <>
-          <Header />
-          <div className="p-4">
-            <MessageInputBox userId={response?.data?.data} />
-          </div>
-        </>
-      );
+      return response?.data?.data;
     }
-    return <div>Hi {params.username}</div>;
-  } catch (error: any) {
-    return <p>{error?.message}</p>;
+    throw Error(response?.data?.message);
+  } catch (error: unknown) {
+    throw error;
   }
+}
+const Page = async ({ params }: { params: { username: string } }) => {
+  const response = await getUserId(params.username);
+  return (
+    <>
+      <Header />
+      <div className="p-4">
+        <MessageInputBox userId={response} />
+      </div>
+    </>
+  );
 };
 
 export default Page;

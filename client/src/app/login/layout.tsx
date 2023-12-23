@@ -10,17 +10,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className="relative"
-        style={{
-          backgroundColor: "#ffffff",
-          backgroundImage: "radial-gradient(#1b1871 0.6px, #ffffff 0.6px)",
-          backgroundSize: "20px 20px",
-        }}
-      >
-        {children}
-      </body>
-    </html>
+    <section
+      className="relative h-screen"
+      style={{
+        backgroundColor: "#ffffff",
+        backgroundImage: "radial-gradient(#1b1871 0.6px, #ffffff 0.6px)",
+        backgroundSize: "20px 20px",
+      }}
+    >
+      {children}
+    </section>
   );
 }

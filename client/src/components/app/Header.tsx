@@ -1,4 +1,4 @@
-"use sever";
+"use client";
 const Header = ({ username }: { username?: string }) => {
   return (
     <div className="px-4 py-6 bg-primary text-white flex items-center justify-between">

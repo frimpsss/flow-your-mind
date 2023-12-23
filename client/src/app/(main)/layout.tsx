@@ -7,12 +7,10 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="h-[100svh] relative">
-        <MainAppHeader />
-        {children}
-        <MainAppFooter />
-      </body>
-    </html>
+    <>
+      <MainAppHeader />
+      {children}
+      <MainAppFooter />
+    </>
   );
 }
