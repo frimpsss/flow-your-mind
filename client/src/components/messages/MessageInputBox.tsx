@@ -19,6 +19,7 @@ const MessageInputBox = ({ userId }: { userId: string }) => {
         toast.success("message sent", { position: "bottom-center" });
       }
     } catch (error) {
+      toast.error('error')
     } finally {
       setMessage("");
       setLoading(false);

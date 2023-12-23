@@ -38,6 +38,6 @@ messageRouter.get(
       req.body.userId,
       req.params.messageId
     );
-    res.send(response);
+    res.status(response.statusCode).send(response);
   }
 );
