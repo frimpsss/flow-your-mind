@@ -101,7 +101,7 @@ export class AuthController {
       const accessToken = createAccessToken(founduser.id);
       let newRefreshTokensArray = !token
         ? founduser.tokens
-        : founduser.tokens.filter((t) => t !== token);
+        : founduser.tokens.filter((t:string) => t !== token);
 
       if (token) {
         const foundToken = await prisma.user.findFirst({
@@ -215,7 +215,7 @@ export class AuthController {
         ) as { userId: string };
         const access_token = createAccessToken(userId);
         const new_refresh_token = createRefreshToken(userId);
-        const newTokens = founduser.tokens.filter((t) => t != refresh_token);
+        const newTokens = founduser.tokens.filter((t:string) => t != refresh_token);
 
         await prisma.user.update({
           where: {
@@ -231,7 +231,7 @@ export class AuthController {
           new_refresh_token,
         });
       } catch (err) {
-        const newTokens = founduser.tokens.filter((t) => t != refresh_token);
+        const newTokens = founduser.tokens.filter((t:string) => t != refresh_token);
         await prisma.user.update({
           where: {
             id: founduser.id,

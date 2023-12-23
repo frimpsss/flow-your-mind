@@ -42,7 +42,14 @@ export class MessageController {
         },
       });
 
-      const d = messages.map((e) => new MessageDTO(e));
+      const d = messages.map(
+        (e: {
+          id: string;
+          content: string;
+          isOpened: boolean | null;
+          reciepientId: string;
+        }) => new MessageDTO(e)
+      );
 
       return new CustomResponse(
         HttpStatusCode.Ok,
@@ -124,7 +131,14 @@ export class MessageController {
         );
       }
 
-      const message = founduser.messages.find((m) => m.id === messageId);
+      const message = founduser.messages.find(
+        (m: {
+          id: string;
+          content: string;
+          isOpened: boolean | null;
+          reciepientId: string;
+        }) => m.id === messageId
+      );
       if (!message) {
         return new CustomResponse(
           HttpStatusCode.BadRequest,
