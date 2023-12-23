@@ -11,7 +11,6 @@
     "start": "node dist/src/index.js",
     "prod:db": "npx prisma migrate deploy"
   },
-  "prisma.schema": "prisma/schema.prisma",
   "keywords": [],
   "author": "",
   "license": "ISC",
