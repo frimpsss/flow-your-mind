@@ -1,0 +1,23 @@
+name: API
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'server/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Docker Setup QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+
+      - name: Build Docker Image
+        run: docker build -t fffrimjps/flow-mind .
