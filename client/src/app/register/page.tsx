@@ -1,9 +1,9 @@
-"use client"
+"use client";
 import { Register } from "@/containers";
 import { useRouter } from "next/navigation";
 import React from "react";
 const Page = () => {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <div className="grid grid-cols-12 place-content-center  px-4 relative pt-[5rem]  md:pt-[7rem]">
       <span className="hidden md:block md:col-span-3 lg:col-span-4"></span>
@@ -14,9 +14,16 @@ const Page = () => {
         <Register />
 
         <p className="text-[1.1rem] bg-transparent text-center">
-          Already have an account? <button className="text-primary cursor-pointer" onClick={() => {
-            router.push('/login')
-          }}>log in</button>.
+          Already have an account?{" "}
+          <button
+            className="text-primary cursor-pointer"
+            onClick={() => {
+              router.push("/login");
+            }}
+          >
+            log in
+          </button>
+          .
         </p>
       </div>
     </div>

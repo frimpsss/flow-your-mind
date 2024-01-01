@@ -6,6 +6,7 @@ import { authRouter } from "./auth/auth.routes";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { messageRouter } from "./messages/message.routes";
+import { prisma } from "../prisma";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  await prisma.$connect()
   console.log(`Server up and spinning on port: ${port}`);
 });

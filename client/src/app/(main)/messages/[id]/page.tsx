@@ -1,23 +1,26 @@
-"use server"
-import  Message from "@/components/messages/Message";
-import { _ } from "@/utils"
-import axios from "axios";
+"use client";
+import Message from "@/components/messages/Message";
+import { _ } from "@/utils";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-const Page = async ({params}: {params: {id: string}}) => {
- try {
-  // await _.get(`/message/${params.id}`)
-  const res = await axios.get('https://rickandmortyapi.com/api/character')
+const Page = ({ params }: { params: { id: string } }) => {
+  const [message, setMessage] = useState<any>();
+  async function getMessage() {
+    try {
+      const res = await _.get(`/message/${params.id}`);
+      if (res?.data?.status) {
+        setMessage(res?.data?.data);
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  }
 
-  console.log(res.data?.results?.map((e: any) => (e?.origin)));
-  
+  useEffect(() => {
+    getMessage();
+  }, []);
+  return <Message message={message?.content} time="wow" />;
+};
 
-  return <Message message="Wow" time="wow"/>
- } catch (error: any) {
-  console.log(error);
-  
-  return <p>{error?.message}</p>
- }
-
-}
-
-export default Page
+export default Page;

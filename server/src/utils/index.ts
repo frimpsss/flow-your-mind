@@ -13,7 +13,7 @@ export const corsOptions: CorsOptions = {
       callback(new Error("Cors error"));
     }
   },
-  allowedHeaders: ["X-Requested-With", "content-type"],
+  allowedHeaders: ["X-Requested-With", "content-type", "Authorization"],
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],

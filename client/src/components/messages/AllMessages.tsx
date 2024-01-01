@@ -1,111 +1,32 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import MessageBox from "./MessageBox";
+import { _ } from "@/utils";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 const AllMessages = () => {
-  const sampleData = [
-    {
-      isOpened: true,
-      messageId: "message_1",
-    },
-    {
-      isOpened: false,
-      messageId: "message_2",
-    },
-    {
-      isOpened: true,
-      messageId: "message_3",
-    },
-    {
-      isOpened: false,
-      messageId: "message_4",
-    },
-    {
-      isOpened: true,
-      messageId: "message_5",
-    },
-    {
-      isOpened: false,
-      messageId: "message_6",
-    },
-    {
-      isOpened: true,
-      messageId: "message_7",
-    },
-    {
-      isOpened: false,
-      messageId: "message_8",
-    },
-    {
-      isOpened: true,
-      messageId: "message_9",
-    },
-    {
-      isOpened: false,
-      messageId: "message_10",
-    },
-    {
-      isOpened: true,
-      messageId: "message_11",
-    },
-    {
-      isOpened: false,
-      messageId: "message_12",
-    },
-    {
-      isOpened: true,
-      messageId: "message_13",
-    },
-    {
-      isOpened: false,
-      messageId: "message_14",
-    },
-    {
-      isOpened: true,
-      messageId: "message_15",
-    },
-    {
-      isOpened: false,
-      messageId: "message_16",
-    },
-    {
-      isOpened: true,
-      messageId: "message_17",
-    },
-    {
-      isOpened: false,
-      messageId: "message_18",
-    },
-    {
-      isOpened: true,
-      messageId: "message_19",
-    },
-    {
-      isOpened: false,
-      messageId: "message_20",
-    },
-    {
-      isOpened: false,
-      messageId: "message_16",
-    },
-    {
-      isOpened: true,
-      messageId: "message_17",
-    },
-    {
-      isOpened: false,
-      messageId: "message_18",
-    },
-    {
-      isOpened: true,
-      messageId: "message_19",
-    },
-    {
-      isOpened: false,
-      messageId: "message_20",
-    },
-  ];
+  const [messages, setMessages] = useState([]);
+  async function getAllMessages() {
+    try {
+      const response = await _.get("/messages");
 
+      if (response?.data?.status) {
+        setMessages(response?.data?.data);
+      } else {
+        toast.error("error 1", response?.data?.message);
+      }
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        toast.error("Axios ", error?.response?.data?.message);
+      } else {
+        toast.error(("error 2" + error?.message) as string);
+      }
+    }
+  }
+  useEffect(() => {
+    getAllMessages();
+  }, []);
   return (
     <>
       <div className="relative w-full">
@@ -116,9 +37,19 @@ const AllMessages = () => {
             width: "calc(100vw - 2rem)",
           }}
         >
-          {sampleData.map((e, i) => (
-            <MessageBox {...e} key={i}/>
-          ))}
+          {messages?.map(
+            (
+              e: {
+                isOpened: boolean;
+                id: string;
+              },
+              i
+            ) => {
+              return (
+              // console.log(e);
+               <MessageBox {...e} key={i} />
+            )}
+          )}
         </div>
       </div>
     </>

@@ -4,7 +4,9 @@ import { RegisterComponent } from "@/components";
 import toast from "react-hot-toast";
 import { _ } from "@/utils";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 const RegisterContainer = () => {
+  const router = useRouter();
   const [loading, setLoading] = React.useState<boolean>(false);
   async function registerUser(values: any) {
     try {
@@ -14,15 +16,14 @@ const RegisterContainer = () => {
         password: values!!!!!!!?.password,
       });
 
-      if (response?.data) {
-        console.log(response?.data);
+      if (response?.data?.status) {
+        // console.log(response?.data);
+        router.push("/login");
+      } else {
+        toast.error(response?.data?.message);
       }
     } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        toast.error(error.message);
-      } else {
-        toast.error("An error occured, Give it another shot");
-      }
+      toast.error("An error occured, Give it another shot");
     } finally {
       setLoading(false);
     }
