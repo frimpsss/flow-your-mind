@@ -19,15 +19,15 @@ const MessageInputBox = ({ userId }: { userId: string }) => {
         toast.success("message sent", { position: "bottom-center" });
       }
     } catch (error) {
-      toast.error('error')
+      toast.error("error");
     } finally {
       setMessage("");
       setLoading(false);
     }
   }
   return (
-    <>
-      <div className="text-white px-3  py-4 rounded-t-lg bg-primary  ">
+    <div className="lg:max-w-[450px] mx-auto lg:pt-8">
+      <div className="text-white px-3   py-4 rounded-t-lg bg-primary  ">
         <p className="font-light"> Flow your mind</p>
       </div>
       <textarea
@@ -46,7 +46,7 @@ const MessageInputBox = ({ userId }: { userId: string }) => {
       <button
         disabled={loading}
         onClick={sendMessage}
-        className="bg-primary/90 hover:bg-primary text-white text-center w-full rounded-lg py-3 mt-5"
+        className="hover:bg-primary/90 bg-primary text-white text-center w-full rounded-lg py-3 mt-5"
       >
         Send message
       </button>
@@ -54,19 +54,19 @@ const MessageInputBox = ({ userId }: { userId: string }) => {
       {submitted && (
         <div className="mt-12 text-center">
           <p>Want to recieve anonymous messages?👀</p>
-          <Link href={'/register'}>
-          <p
-            // onClick={() => {
-            //   router.push("/register");
-            // }}
-            className="w-full  text-primary cursor-pointer underline text-center py-2 rounded-md"
-          >
-            Create an account
-          </p>
+          <Link href={"/register"}>
+            <p
+              // onClick={() => {
+              //   router.push("/register");
+              // }}
+              className="w-full  text-primary cursor-pointer underline text-center py-2 rounded-md"
+            >
+              Create an account
+            </p>
           </Link>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

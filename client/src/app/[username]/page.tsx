@@ -1,3 +1,4 @@
+import Footer from "@/components/core/Footer";
 import Header from "@/components/app/Header";
 import MessageInputBox from "@/components/messages/MessageInputBox";
 import { _ } from "@/utils";
@@ -10,7 +11,7 @@ async function getUserId(username: string) {
       return response?.data?.data;
     }
   } catch (error: unknown) {
-    throw new Error('Link is broken');
+    throw new Error("Link is broken");
   }
 }
 const Page = async ({ params }: { params: { username: string } }) => {
@@ -20,6 +21,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       <Header />
       <div className="p-4">
         <MessageInputBox userId={response} />
+        <Footer />
       </div>
     </>
   );

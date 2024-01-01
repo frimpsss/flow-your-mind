@@ -9,3 +9,10 @@ export {
     TextInput
 }
 from './Text-Input'
+
+export {
+    default
+    as
+    Footer
+}
+ from './Footer'

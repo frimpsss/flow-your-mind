@@ -1,3 +1,4 @@
+import { Footer } from "@/components/core";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Register - Flow mind",
@@ -19,6 +20,7 @@ export default function RootLayout({
       }}
     >
       {children}
+      <Footer/>
     </section>
   );
 }
