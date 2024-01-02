@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ClipboardDocumentIcon } from "@heroicons/react/20/solid";
 import { useCookies } from "react-cookie";
 import toast from "react-hot-toast";
@@ -10,9 +10,11 @@ const ShareLink = () => {
         className="p-4 border-[1px] rounded-lg border-dashed"
         onClick={() => {
           if (typeof window !== "undefined") {
-            navigator.clipboard.writeText(`${window?.location?.origin}/${cookies?.user?.username}`);
+            const linkToCopy = `${window.location.origin}/${cookies?.user?.username}`;
+            navigator.clipboard.writeText(linkToCopy).then(() => {
+              toast.success("Link copied to clipboard");
+            });
           }
-          toast.success("Link copied to clipboard");
         }}
         suppressHydrationWarning
       >

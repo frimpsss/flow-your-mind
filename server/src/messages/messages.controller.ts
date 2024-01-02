@@ -1,7 +1,7 @@
 import { CustomResponse, HttpStatusCode } from "../utils";
 import { prisma } from "../../prisma";
 import { encryptText } from "../services/encryption.service";
-import { MessageDTO } from "./message.utils";
+import { MessageDTO, SingleMessageDTO } from "./message.utils";
 export class MessageController {
   /**
    * create Message
@@ -157,12 +157,12 @@ export class MessageController {
           },
         });
       }
-
+      const msg = new SingleMessageDTO(message);
       return new CustomResponse(
         HttpStatusCode.Ok,
         "message retieved",
         true,
-        message
+        msg
       );
     } catch (error: unknown) {
       return new CustomResponse(

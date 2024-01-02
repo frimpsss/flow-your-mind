@@ -47,7 +47,6 @@ _.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
-    console.log("retry ", originalRequest);
     if (error.response.status === 400 && !originalRequest?._retry) {
       originalRequest._retry = true;
 
@@ -55,6 +54,7 @@ _.interceptors.response.use(
         const newAccessToken = await getRefreshToken();
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        console.log(originalRequest)
         return _(originalRequest);
       } catch (refreshError) {
         console.error("Failed to refresh access token:", refreshError);

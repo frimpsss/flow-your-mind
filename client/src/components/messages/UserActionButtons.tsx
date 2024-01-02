@@ -1,9 +1,19 @@
 "use client";
+
+import { useCookies } from "react-cookie";
+
 const UserActionButtons = () => {
+  const [, , removeCookie] = useCookies(["user"]);
   return (
     <div className="flex flex-col gap-4 pt-6">
       <Button title={"Delete all messages"} styles="bg-[red]" />
-      <Button title={"Log out"} styles="bg-primary" />
+      <Button
+        title={"Log out"}
+        styles="bg-primary"
+        onClick={() => {
+          removeCookie("user");
+        }}
+      />
       <Button title={"Delete account"} styles="bg-[red]" />
     </div>
   );

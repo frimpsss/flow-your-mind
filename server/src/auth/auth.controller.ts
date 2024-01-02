@@ -122,11 +122,6 @@ export class AuthController {
               tokens: [],
             },
           });
-          return new CustomResponse(
-            HttpStatusCode.Unauthorized,
-            "Something fishy",
-            false
-          );
         }
       }
 
@@ -206,7 +201,7 @@ export class AuthController {
             }
           }
         );
-        return new CustomResponse(HttpStatusCode.Forbidden, "Invalid token", false);
+        return new CustomResponse(HttpStatusCode.Unauthorized, "Invalid token", false);
       }
       try {
         const { userId } = jwt.verify(

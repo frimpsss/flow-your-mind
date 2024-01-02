@@ -13,3 +13,19 @@ export class MessageDTO {
     this.isOpened = data.isOpened ?? false;
   }
 }
+
+export class SingleMessageDTO {
+  id: string;
+  isOpened: boolean;
+  message: string
+  constructor(data: {
+    id: string;
+    content: string;
+    isOpened: boolean | null;
+    reciepientId: string;
+  }) {
+    this.id = data.id;
+    this.isOpened = data.isOpened ?? false;
+    this.message = decryptText(data.content)
+  }
+}

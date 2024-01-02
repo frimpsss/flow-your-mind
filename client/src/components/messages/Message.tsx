@@ -1,11 +1,11 @@
-"use client"
-const Message = ({message, time}: {message: string, time: string}) => {
+"use client";
+const Message = ({ message, time }: { message: string; time: string }) => {
   return (
-    <div>
-        {time}
-        {message}
+    <div className="p-4">
+      <p>{time}</p>
+      <p>{message}</p>
     </div>
-  )
-}
+  );
+};
 
-export default Message
+export default Message;
