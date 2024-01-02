@@ -1,4 +1,5 @@
 "use client";
+import { baseURL } from "@/utils";
 import { ClipboardDocumentIcon } from "@heroicons/react/20/solid";
 import { useCookies } from "react-cookie";
 import toast from "react-hot-toast";
@@ -9,12 +10,10 @@ const ShareLink = () => {
       <div
         className="p-4 border-[1px] rounded-lg border-dashed"
         onClick={() => {
-          if (typeof window !== "undefined") {
-            const linkToCopy = `${window.location.origin}/${cookies?.user?.username}`;
-            navigator.clipboard.writeText(linkToCopy).then(() => {
-              toast.success("Link copied to clipboard");
-            });
-          }
+          const linkToCopy = `${baseURL}/${cookies?.user?.username}`;
+          navigator.clipboard.writeText(linkToCopy).then(() => {
+            toast.success("Link copied to clipboard");
+          });
         }}
         suppressHydrationWarning
       >
@@ -23,8 +22,7 @@ const ShareLink = () => {
         </p>
         <span className="flex p-2 items-center justify-between border-[0.75px] rounded-lg text-ellipsis cursor-pointer border-primary">
           <p className="text-primary/80 hover:text-primary duration-700 font-[0.9rem]">
-            {typeof window !== "undefined" &&
-              `${window?.location?.origin}/${cookies?.user?.username}`}
+            `${baseURL}/${cookies?.user?.username}
           </p>
           <ClipboardDocumentIcon height={20} className="text-primary" />
         </span>

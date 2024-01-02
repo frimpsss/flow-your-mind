@@ -39,4 +39,9 @@ export function passwordTest(password: string): {
   };
 }
 
-export {_} from './api'
+export const baseURL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://flow-your-mind-test.vercel.app";
+
+export { _ } from "./api";
