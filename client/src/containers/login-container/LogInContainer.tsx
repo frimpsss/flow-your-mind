@@ -2,14 +2,19 @@
 import { LogInComponent } from "@/components";
 import { _ } from "@/utils";
 import { AxiosError } from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 const LogInContainer = () => {
-  const [, setCookies] = useCookies(["user"]);
+  const [c, setCookies] = useCookies(["user"]);
   const router = useRouter();
   const [loading, setLoading] = React.useState<boolean>(false);
+  useEffect(() => {
+    if (c?.user?.token) {
+      router.push("/messages");
+    }
+  }, []);
   async function loginUser(data: any) {
     try {
       setLoading(true);
@@ -18,8 +23,6 @@ const LogInContainer = () => {
         password: data?.password,
       });
       if (response?.data?.status) {
-        // setToken(response?.data?.access_token);
-        // setUsername(response?.data?.username);
         setCookies("user", {
           username: response?.data?.username,
           token: response?.data?.access_token,
@@ -31,7 +34,7 @@ const LogInContainer = () => {
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        console.log(error)
+        console.log(error);
         toast.error(error.response?.data?.message);
       } else {
         toast.error("An error occured, Give it another shot");

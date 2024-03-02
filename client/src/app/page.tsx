@@ -16,6 +16,7 @@ export default function Home() {
     return () => clearInterval(i);
   }, []);
   return (
+    <>
     <div className="text-primary relative">
       <div className="flex py-5 justify-between items-center lg:border-b-[1px] px-6 border-primary border-dotted">
         <h4 className="font-bold text-[1.5rem] lg:text-[2.2rem]">
@@ -74,7 +75,9 @@ export default function Home() {
         FAQ
       </div>
       </div> */}
-      <Footer />
+      
     </div>
+    <Footer />
+    </>
   );
 }

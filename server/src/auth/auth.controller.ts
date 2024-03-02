@@ -126,6 +126,33 @@ export class AuthController {
               tokens: [],
             },
           });
+
+          jwt.verify(
+            token,
+            process.env.REFRESH_TOKEN_SECRET as string,
+            async (error: unknown, decode: unknown) => {
+              if (error) {
+                console.log(error);
+                return;
+              }
+              const { userId } = decode as { userId: string };
+              const possibleUser = await prisma.user.findUnique({
+                where: {
+                  id: userId,
+                },
+              });
+              if (possibleUser) {
+                await prisma.user.update({
+                  where: {
+                    id: possibleUser.id,
+                  },
+                  data: {
+                    tokens: [],
+                  },
+                });
+              }
+            }
+          );
         }
       }
 
@@ -179,20 +206,26 @@ export class AuthController {
         },
       });
 
+      console.log("found user: ", founduser);
+
       // check for token in wrong hands
       if (!founduser) {
         jwt.verify(
           refresh_token,
           process.env.REFRESH_TOKEN_SECRET as string,
           async (error: unknown, decode: unknown) => {
-            if (error) return;
+            if (error) {
+              console.log(error);
+
+              return;
+            }
             const { userId } = decode as { userId: string };
             const possibleUser = await prisma.user.findUnique({
               where: {
                 id: userId,
               },
             });
-
+            console.log("possible user: ", possibleUser);
             if (possibleUser) {
               await prisma.user.update({
                 where: {

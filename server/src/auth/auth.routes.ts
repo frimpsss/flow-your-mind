@@ -3,7 +3,6 @@ import type { Request, Response } from "express";
 import { AuthController } from "./auth.controller";
 import { HttpStatusCode } from "../utils";
 import { loginResponse } from "./types";
-import { prisma } from "../../prisma";
 
 export const authRouter = express.Router();
 const controller = new AuthController();
@@ -46,7 +45,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
 authRouter.get("/refresh", async (req: Request, res: Response) => {
   const cookie = req.cookies?.auth;
   if (!cookie) {
-    return res.send("No cookie");
+    return res.status(HttpStatusCode.Unauthorized).send("No cookie");
   }
   const response = await controller.getAccessToken(cookie);
   if (response.statusCode == HttpStatusCode.Ok) {

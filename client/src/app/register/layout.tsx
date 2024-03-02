@@ -16,7 +16,7 @@ export default function RootLayout({
       style={{
         backgroundColor: "#ffffff",
         backgroundImage: "radial-gradient(#1b1871 0.6px, #ffffff 0.6px)",
-        backgroundSize: "20px 20px",
+        backgroundSize: "20px 20px"
       }}
     >
       {children}

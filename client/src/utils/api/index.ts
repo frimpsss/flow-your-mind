@@ -1,5 +1,4 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
-import Router from "next/router";
 import { Cookies } from "react-cookie";
 const cookie = new Cookies();
 export const _ = axios.create({
@@ -14,7 +13,7 @@ async function getRefreshToken() {
       const old_cookie = cookie.get("user");
       cookie.set("user", {
         username: old_cookie?.username,
-        token: old_cookie?.token,
+        token: response?.data?.access_token
       });
       return response?.data?.access_token;
     }
@@ -27,7 +26,7 @@ _.interceptors.request.use(
   async (
     _c: InternalAxiosRequestConfig
   ): Promise<InternalAxiosRequestConfig> => {
-    const access_token = cookie.get("user")?.token;
+    const access_token = cookie.get("user")?.token ?? await getRefreshToken();
 
     if (access_token) {
       _c.headers.Authorization = `Bearer ${access_token}`;
@@ -47,14 +46,16 @@ _.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
-    if (error.response.data?.message === "expired_token" && !originalRequest?._retry) {
+    if (
+      error.response.data?.message === "expired_token" &&
+      !originalRequest?._retry
+    ) {
       originalRequest._retry = true;
-
       try {
         const newAccessToken = await getRefreshToken();
 
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        console.log(originalRequest)
+        originalRequest.headers.Authorization = "Bearer " + newAccessToken;
+        console.log(originalRequest);
         return _(originalRequest);
       } catch (refreshError) {
         console.error("Failed to refresh access token: ", refreshError);
@@ -76,8 +77,8 @@ _.interceptors.response.use(
     };
     if (error.response.status == 401 && !originalRequest?._retry) {
       originalRequest._retry = true;
-        cookie.remove("user")
-        window.location.href = '/login'
+      cookie.remove("user")
+      window.location.href = '/login'
     }
 
     return Promise.reject(error);
