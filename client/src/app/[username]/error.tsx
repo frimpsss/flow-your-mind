@@ -13,7 +13,8 @@ export default function Error({
   }, [error]);
   return (
     <div>
-      <h2>Something went wrong!: {error?.digest}</h2>
+      <h2>Something went wrong!</h2>
+      <h2>link is broken or doesnt exist</h2>
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import Router from "next/router";
 import { Cookies } from "react-cookie";
 const cookie = new Cookies();
@@ -47,7 +47,7 @@ _.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
-    if (error.response.status === 400 && !originalRequest?._retry) {
+    if (error.response.data?.message === "expired_token" && !originalRequest?._retry) {
       originalRequest._retry = true;
 
       try {
@@ -57,9 +57,27 @@ _.interceptors.response.use(
         console.log(originalRequest)
         return _(originalRequest);
       } catch (refreshError) {
-        console.error("Failed to refresh access token:", refreshError);
+        console.error("Failed to refresh access token: ", refreshError);
+        window.location.href = '/login'
         return Promise.reject(error);
       }
+    }
+
+    return Promise.reject(error);
+  }
+);
+_.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
+    if (error.response.status == 401 && !originalRequest?._retry) {
+      originalRequest._retry = true;
+        cookie.remove("user")
+        window.location.href = '/login'
     }
 
     return Promise.reject(error);
@@ -68,7 +86,6 @@ _.interceptors.response.use(
 _.interceptors.request.use(
   (config: any) => {
     if (config.method === "options") {
-      // Return a response for OPTIONS requests to satisfy CORS
       return Promise.resolve({ status: 200 });
     }
     return config;

@@ -42,7 +42,11 @@ export class AuthController {
           password: hashed_password,
         },
       });
-      return new CustomResponse(HttpStatusCode.Created, "Sign up succesful", true);
+      return new CustomResponse(
+        HttpStatusCode.Created,
+        "Sign up succesful",
+        true
+      );
     } catch (error: any) {
       if (error instanceof z.ZodError) {
         return new CustomResponse(
@@ -101,7 +105,7 @@ export class AuthController {
       const accessToken = createAccessToken(founduser.id);
       let newRefreshTokensArray = !token
         ? founduser.tokens
-        : founduser.tokens.filter((t:string) => t !== token);
+        : founduser.tokens.filter((t: string) => t !== token);
 
       if (token) {
         const foundToken = await prisma.user.findFirst({
@@ -201,7 +205,11 @@ export class AuthController {
             }
           }
         );
-        return new CustomResponse(HttpStatusCode.Unauthorized, "Invalid token", false);
+        return new CustomResponse(
+          HttpStatusCode.Unauthorized,
+          "Invalid token",
+          false
+        );
       }
       try {
         const { userId } = jwt.verify(
@@ -210,7 +218,9 @@ export class AuthController {
         ) as { userId: string };
         const access_token = createAccessToken(userId);
         const new_refresh_token = createRefreshToken(userId);
-        const newTokens = founduser.tokens.filter((t:string) => t != refresh_token);
+        const newTokens = founduser.tokens.filter(
+          (t: string) => t != refresh_token
+        );
 
         await prisma.user.update({
           where: {
@@ -221,12 +231,14 @@ export class AuthController {
           },
         });
 
-        return new CustomResponse(HttpStatusCode.Ok, undefined,true, {
+        return new CustomResponse(HttpStatusCode.Ok, undefined, true, {
           access_token,
           new_refresh_token,
         });
       } catch (err) {
-        const newTokens = founduser.tokens.filter((t:string) => t != refresh_token);
+        const newTokens = founduser.tokens.filter(
+          (t: string) => t != refresh_token
+        );
         await prisma.user.update({
           where: {
             id: founduser.id,
@@ -235,13 +247,16 @@ export class AuthController {
             tokens: newTokens,
           },
         });
-        return new CustomResponse(HttpStatusCode.Forbidden, "JWT malfunctioned", false);
+        return new CustomResponse(
+          HttpStatusCode.Unauthorized,
+          "JWT malfunctioned",
+          false
+        );
       }
-
     } catch (error: any) {
       return new CustomResponse(
         HttpStatusCode.InternalServerError,
-        error?.message, 
+        error?.message,
         false
       );
     }

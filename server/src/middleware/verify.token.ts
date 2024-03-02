@@ -1,5 +1,5 @@
 import { Response, NextFunction, Request } from "express";
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { HttpStatusCode } from "../utils";
 export async function verifyToken(
   req: Request,
@@ -10,7 +10,7 @@ export async function verifyToken(
     const token: string | undefined =
       req?.headers?.["authorization"]?.split(" ")[1];
     if (!token) {
-      return res.status(HttpStatusCode.Forbidden).send({
+      return res.status(HttpStatusCode.Unauthorized).send({
         status: false,
         message: "no auth header",
       });
@@ -24,15 +24,21 @@ export async function verifyToken(
 
     next();
   } catch (error: any) {
-    if (error instanceof JsonWebTokenError) {
-      return res.status(HttpStatusCode.BadRequest).send({
+    if (error instanceof TokenExpiredError) {
+      return res.status(HttpStatusCode.Forbidden).send({
         status: false,
-        message: "invalid token",
+        message: "expired_token",
+      });
+    }
+    if (error instanceof JsonWebTokenError) {
+      return res.status(HttpStatusCode.Unauthorized).send({
+        status: false,
+        message: "unauthorized",
       });
     }
     return res.status(HttpStatusCode.InternalServerError).send({
-        status: false, 
-        message: error?.message,
-    })
+      status: false,
+      message: error?.message,
+    });
   }
 }

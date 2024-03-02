@@ -30,7 +30,7 @@ const AllMessages = () => {
   return (
     <>
       <div className="relative w-full">
-        <h4 className="font-semibold text-[1.5rem]">Messages(4)</h4>
+        <h4 className="font-semibold text-[1.5rem]">Messages({messages?.length})</h4>
         <div
           className="gap-2   grid grid-cols-3  pt-4 pb-[20vh] scroll-smooth"
           style={{
