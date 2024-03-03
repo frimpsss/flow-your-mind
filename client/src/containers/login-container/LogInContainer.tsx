@@ -2,7 +2,7 @@
 import { LogInComponent } from "@/components";
 import { _ } from "@/utils";
 import { AxiosError } from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
@@ -10,11 +10,11 @@ const LogInContainer = () => {
   const [c, setCookies] = useCookies(["user"]);
   const router = useRouter();
   const [loading, setLoading] = React.useState<boolean>(false);
-  useEffect(() => {
-    if (c?.user?.token) {
-      router.push("/messages");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (c?.user?.token) {
+  //     router.push("/messages");
+  //   }
+  // }, []);
   async function loginUser(data: any) {
     try {
       setLoading(true);

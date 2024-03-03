@@ -26,8 +26,8 @@ _.interceptors.request.use(
   async (
     _c: InternalAxiosRequestConfig
   ): Promise<InternalAxiosRequestConfig> => {
-    const access_token = cookie.get("user")?.token ?? await getRefreshToken();
-
+    const access_token = cookie.get("user")?.token 
+    
     if (access_token) {
       _c.headers.Authorization = `Bearer ${access_token}`;
     }
