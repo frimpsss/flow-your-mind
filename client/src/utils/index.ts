@@ -39,5 +39,24 @@ export function passwordTest(password: string): {
   };
 }
 
-export const baseURL = typeof window !== "undefined" ? `${window.location.protocol}://${window.location.host}` : ''
+export const baseURL =
+  typeof window !== "undefined"
+    ? `${window.location.protocol}//${window.location.host}`
+    : "";
 export { _ } from "./api";
+
+export function formatDate(date: string) {
+  const dateObj = new Date(date);
+  if (isNaN(dateObj.getTime())) {
+    return ""
+  }
+  const dayOfWeek = dateObj.toLocaleDateString("en-US", { weekday: "long" }); // Full weekday name (e.g., Wednesday)
+  const day = dateObj.getDate().toString().padStart(2, "0"); // Day of the month (e.g., 04) with leading zero
+  const month = dateObj.toLocaleDateString("en-US", { month: "long" }); // Full month name (e.g., April)
+  const hours = dateObj.getUTCHours().toString().padStart(2, "0"); // Hours in 24-hour format with leading zero (GMT)
+  const minutes = dateObj.getUTCMinutes().toString().padStart(2, "0"); // Minutes with leading zero (GMT)
+  const seconds = dateObj.getUTCSeconds().toString().padStart(2, "0"); // Seconds with leading zero (GMT)
+
+  // Format the output string
+  return `${dayOfWeek} ${day} ${month} ${hours}:${minutes}:${seconds} GMT`;
+}

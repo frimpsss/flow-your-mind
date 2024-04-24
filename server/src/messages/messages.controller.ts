@@ -32,6 +32,32 @@ export class MessageController {
     }
   }
 
+  public async getUnopendMeaages(
+    id: string
+  ): Promise<CustomResponse<number | Error>> {
+    try {
+      const unopendCount = await prisma.message.count({
+        where: {
+          reciepientId: id,
+          isOpened: false,
+        },
+      });
+
+      return new CustomResponse(
+        HttpStatusCode.Ok,
+        "all messages retrieved",
+        true,
+        unopendCount
+      );
+    } catch (error: any) {
+      return new CustomResponse(
+        HttpStatusCode.InternalServerError,
+        error?.message,
+        false
+      );
+    }
+  }
+
   public async getAllMessages(
     id: string
   ): Promise<CustomResponse<MessageDTO[] | Error>> {
@@ -39,6 +65,9 @@ export class MessageController {
       const messages = await prisma.message.findMany({
         where: {
           reciepientId: id,
+        },
+        orderBy: {
+          createdOn: "desc",
         },
       });
 
@@ -137,6 +166,7 @@ export class MessageController {
           content: string;
           isOpened: boolean | null;
           reciepientId: string;
+          createdOn: Date | null;
         }) => m.id === messageId
       );
       if (!message) {

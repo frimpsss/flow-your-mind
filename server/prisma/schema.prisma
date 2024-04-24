@@ -19,9 +19,10 @@ model User {
 }
 
 model Message {
-  id           String   @unique @default(cuid())
+  id           String    @unique @default(cuid())
   content      String
-  isOpened     Boolean? @default(false)
+  isOpened     Boolean?  @default(false)
   reciepientId String
-  reciepient   User     @relation(fields: [reciepientId], references: [id])
+  reciepient   User      @relation(fields: [reciepientId], references: [id])
+  createdOn    DateTime? @default(now())
 }

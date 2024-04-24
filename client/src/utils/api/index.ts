@@ -15,6 +15,7 @@ async function getRefreshToken() {
         username: old_cookie?.username,
         token: response?.data?.access_token
       });
+
       return response?.data?.access_token;
     }
   } catch (error) {

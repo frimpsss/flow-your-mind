@@ -19,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         <title>Flow your mind</title>
+        <meta name="theme-color" content="#1b1871f"/>
       </Head>
       <body>
         <Toaster

@@ -20,7 +20,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     getMessage();
   }, []);
-  return <Message message={message?.message} time="wow" />;
+  return <Message message={message?.message} time={message?.timeStamp} />;
 };
 
 export default Page;

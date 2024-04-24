@@ -23,6 +23,16 @@ messageRouter.get(
 );
 
 messageRouter.get(
+  "/messages/unread",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const response = await messageController.getUnopendMeaages(req.body.userId);
+
+    res.status(response.statusCode).send(response);
+  }
+);
+
+messageRouter.get(
   "/username/:username",
   async (req: Request, res: Response) => {
     const response = await messageController.getUserId(req.params.username);
