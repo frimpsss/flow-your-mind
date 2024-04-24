@@ -48,7 +48,7 @@ const MessageInputBox = ({ userId }: { userId: string }) => {
         onClick={sendMessage}
         className="hover:bg-primary/90 bg-primary text-white text-center w-full rounded-lg py-3 mt-5"
       >
-        Send message
+        {loading? 'sending...': 'send message'}
       </button>
 
       {submitted && (
