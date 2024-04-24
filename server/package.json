@@ -9,8 +9,7 @@
     "prestart": "npx tsc",
     "build": "npx tsc",
     "start": "node dist/src/index.js",
-    "prebuild": "npx prisma migrate deploy && npx prisma generate",
-    "postbuild": "node dist/src/index.js"
+    "prebuild": "npx prisma migrate deploy && npx prisma generate"
   },
   "keywords": [],
   "author": "",
