@@ -11,7 +11,7 @@ async function getUserId(username: string) {
       return response?.data?.data;
     }
   } catch (error: unknown) {
-    throw new Error("Link is broken");
+    throw  Error("Link is broken");
   }
 }
 const Page = async ({ params }: { params: { username: string } }) => {

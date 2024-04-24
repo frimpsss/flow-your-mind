@@ -24,10 +24,6 @@ export default function Error({
         <Link href={"/"}>
           <button
             className="bg-primary/5 hover:bg-primary/10 duration-500 rounded p-2 mt-6"
-            onClick={
-              // Attempt to recover by trying to re-render the segment
-              () => reset()
-            }
           >
             Return Home
           </button>

@@ -26,10 +26,11 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       response.data as loginResponse;
     return res
       .cookie("auth", refresh_token, {
-        httpOnly: process.env.NODE_ENV != "development",
+        httpOnly: true,
         maxAge: 60 * 60 * 60 * 60 * 60,
         path: "/",
-        secure: process.env.NODE_ENV != "development",
+        secure: true,
+        sameSite: "none",
       })
       .status(response.statusCode)
       .send({
@@ -51,10 +52,11 @@ authRouter.get("/refresh", async (req: Request, res: Response) => {
   if (response.statusCode == HttpStatusCode.Ok) {
     return res
       .cookie("auth", response?.data?.new_refresh_token, {
-        httpOnly: process.env.NODE_ENV !== "development",
+        httpOnly: true,
         maxAge: 60 * 60 * 60 * 60 * 60,
         path: "/",
-        secure: process.env.NODE_ENV != "development",
+        secure: true,
+        sameSite: "none",
       })
       .status(response.statusCode)
       .send({
