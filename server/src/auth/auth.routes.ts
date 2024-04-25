@@ -31,7 +31,6 @@ authRouter.post("/login", async (req: Request, res: Response) => {
         path: "/",
         secure: true,
         sameSite: "none",
-        domain: req.headers.origin,
       })
       .status(response.statusCode)
       .send({
@@ -58,7 +57,6 @@ authRouter.get("/refresh", async (req: Request, res: Response) => {
         path: "/",
         secure: true,
         sameSite: "none",
-        domain: req.headers.origin,
       })
       .status(response.statusCode)
       .send({
