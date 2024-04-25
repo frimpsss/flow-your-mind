@@ -1,5 +1,6 @@
 "use client";
 
+import { getRefreshToken } from "@/utils/api";
 import { useCookies } from "react-cookie";
 
 const UserActionButtons = () => {
@@ -14,7 +15,9 @@ const UserActionButtons = () => {
           removeCookie("user");
         }}
       />
-      <Button title={"Delete account"} styles="bg-[red]" />
+      <Button title={"Delete account"} styles="bg-[red]" onClick={()=>{
+        getRefreshToken()
+      }} />
     </div>
   );
 };

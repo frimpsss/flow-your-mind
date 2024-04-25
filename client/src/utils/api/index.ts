@@ -6,7 +6,7 @@ export const _ = axios.create({
   withCredentials: true,
 });
 
-async function getRefreshToken() {
+export async function getRefreshToken() {
   try {
     const response = await _.get("/refresh");
     if (response?.data?.status) {
