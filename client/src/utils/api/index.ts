@@ -13,12 +13,13 @@ export async function getRefreshToken() {
       const old_cookie = cookie.get("user");
       cookie.set("user", {
         username: old_cookie?.username,
-        token: response?.data?.access_token
+        token: response?.data?.access_token,
       });
 
       return response?.data?.access_token;
     }
   } catch (error) {
+    console.log(error);
     return Promise.reject(error);
   }
 }
@@ -27,8 +28,8 @@ _.interceptors.request.use(
   async (
     _c: InternalAxiosRequestConfig
   ): Promise<InternalAxiosRequestConfig> => {
-    const access_token = cookie.get("user")?.token 
-    
+    const access_token = cookie.get("user")?.token;
+
     if (access_token) {
       _c.headers.Authorization = `Bearer ${access_token}`;
     }
@@ -60,7 +61,7 @@ _.interceptors.response.use(
         return _(originalRequest);
       } catch (refreshError) {
         console.error("Failed to refresh access token: ", refreshError);
-        window.location.href = '/login'
+        // window.location.href = "/login";
         return Promise.reject(error);
       }
     }
@@ -78,8 +79,9 @@ _.interceptors.response.use(
     };
     if (error.response.status == 401 && !originalRequest?._retry) {
       originalRequest._retry = true;
-      cookie.remove("user")
-      window.location.href = '/login'
+      cookie.remove("user");
+      console.log("401 error: ", error)
+      // window.location.href = "/login";
     }
 
     return Promise.reject(error);

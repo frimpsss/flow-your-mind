@@ -44,10 +44,15 @@ authRouter.post("/login", async (req: Request, res: Response) => {
 });
 
 authRouter.get("/refresh", async (req: Request, res: Response) => {
+  console.log("environment: ", process.env.NODE_ENV == "development");
+
   const cookie = req.cookies?.auth;
+
+  console.log("Cookie: ", cookie);
   if (!cookie) {
     return res.status(HttpStatusCode.Unauthorized).send("No cookie");
   }
+
   const response = await controller.getAccessToken(cookie);
   if (response.statusCode == HttpStatusCode.Ok) {
     return res

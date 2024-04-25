@@ -105,7 +105,7 @@ export class AuthController {
       const accessToken = createAccessToken(founduser.id);
       let newRefreshTokensArray = !token
         ? founduser.tokens
-        : founduser.tokens.filter((t: string) => t !== token);
+        : founduser.tokens.filter((t: string) => t != token);
 
       if (token) {
         const foundToken = await prisma.user.findFirst({

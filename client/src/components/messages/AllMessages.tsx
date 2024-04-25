@@ -50,7 +50,7 @@ const AllMessages = () => {
             })
           ) : messages?.length == 0 ? (
        <div className="col-span-3 text-center text-primary mt-6">
-        <p >No messages yes ☹️</p>
+        <p >No messages yes 😔</p>
         {/* <p>Share your link</p> */}
         {/* <ShareLink /> */}
        </div>
