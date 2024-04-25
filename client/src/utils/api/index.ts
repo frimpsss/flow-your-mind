@@ -61,7 +61,7 @@ _.interceptors.response.use(
         return _(originalRequest);
       } catch (refreshError) {
         console.error("Failed to refresh access token: ", refreshError);
-        // window.location.href = "/login";
+        window.location.href = "/login";
         return Promise.reject(error);
       }
     }
@@ -81,7 +81,7 @@ _.interceptors.response.use(
       originalRequest._retry = true;
       cookie.remove("user");
       console.log("401 error: ", error)
-      // window.location.href = "/login";
+      window.location.href = "/login";
     }
 
     return Promise.reject(error);

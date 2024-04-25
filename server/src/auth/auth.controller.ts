@@ -139,7 +139,7 @@ export class AuthController {
               const possibleUser = await prisma.user.findUnique({
                 where: {
                   id: userId,
-                },
+                },  
               });
               if (possibleUser) {
                 await prisma.user.update({
@@ -156,7 +156,7 @@ export class AuthController {
         }
       }
 
-      await prisma.user.update({
+      const updated = await prisma.user.update({
         where: {
           id: founduser.id,
         },
@@ -164,6 +164,8 @@ export class AuthController {
           tokens: [...newRefreshTokensArray, refreshToken],
         },
       });
+      console.log("updated: ", updated);
+       
       return new CustomResponse(HttpStatusCode.Ok, "Log in succesful", true, {
         username: founduser.username,
         access_token: accessToken,
