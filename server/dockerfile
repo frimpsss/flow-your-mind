@@ -2,7 +2,7 @@ FROM node:alpine
 WORKDIR /
 COPY package*.json ./
 RUN npm cache clean --force
-RUN npm run install
+RUN npm install
 COPY . .
 RUN npm run build
 EXPOSE 9090
