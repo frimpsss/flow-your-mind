@@ -7,6 +7,7 @@ app = 'flow-your-mind'
 primary_region = 'lhr'
 
 [build]
+  dockerfile = "./dockerfile"
 
 [http_service]
   internal_port = 9090
