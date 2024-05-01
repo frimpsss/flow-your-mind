@@ -1,5 +1,5 @@
 FROM node:alpine
-WORKDIR /
+WORKDIR /server
 COPY package*.json ./
 RUN npm cache clean --force
 RUN npm install -g npm@latest
