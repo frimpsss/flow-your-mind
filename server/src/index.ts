@@ -32,5 +32,5 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
 
 app.listen(port, async () => {
   await prisma.$connect()
-  console.log(`Server up and spinning on port: ${port}`);
+  //og(`Server up and spinning on port: ${port}`);
 });

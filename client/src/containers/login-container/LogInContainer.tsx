@@ -34,7 +34,7 @@ const LogInContainer = () => {
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        console.log(error);
+        //og(error);
         toast.error(error.response?.data?.message);
       } else {
         toast.error("An error occured, Give it another shot");

@@ -17,7 +17,7 @@ const RegisterContainer = () => {
       });
 
       if (response?.data?.status) {
-        // console.log(response?.data);
+        // //og(response?.data);
         router.push("/login");
       } else {
         toast.error(response?.data?.message);

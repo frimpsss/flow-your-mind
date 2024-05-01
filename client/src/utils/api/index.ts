@@ -19,7 +19,7 @@ export async function getRefreshToken() {
       return response?.data?.access_token;
     }
   } catch (error) {
-    console.log(error);
+    //og(error);
     return Promise.reject(error);
   }
 }
@@ -57,7 +57,7 @@ _.interceptors.response.use(
         const newAccessToken = await getRefreshToken();
 
         originalRequest.headers.Authorization = "Bearer " + newAccessToken;
-        console.log(originalRequest);
+        //og(originalRequest);
         return _(originalRequest);
       } catch (refreshError) {
         console.error("Failed to refresh access token: ", refreshError);
@@ -80,7 +80,7 @@ _.interceptors.response.use(
     if (error.response.status == 401 && !originalRequest?._retry) {
       originalRequest._retry = true;
       cookie.remove("user");
-      console.log("401 error: ", error)
+      //og("401 error: ", error)
       window.location.href = "/login";
     }
 

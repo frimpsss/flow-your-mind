@@ -110,10 +110,16 @@ export class AuthController {
       if (token) {
         const foundToken = await prisma.user.findFirst({
           where: {
-            id: founduser?.id,
-            tokens: {
-              has: token,
-            },
+            AND: [
+              {
+                id: founduser?.id,
+              },
+              {
+                tokens: {
+                  has: token,
+                },
+              },
+            ],
           },
         });
 
@@ -132,14 +138,13 @@ export class AuthController {
             process.env.REFRESH_TOKEN_SECRET as string,
             async (error: unknown, decode: unknown) => {
               if (error) {
-                console.log(error);
                 return;
               }
               const { userId } = decode as { userId: string };
               const possibleUser = await prisma.user.findUnique({
                 where: {
                   id: userId,
-                },  
+                },
               });
               if (possibleUser) {
                 await prisma.user.update({
@@ -164,8 +169,8 @@ export class AuthController {
           tokens: [...newRefreshTokensArray, refreshToken],
         },
       });
-      console.log("updated: ", updated);
-       
+
+
       return new CustomResponse(HttpStatusCode.Ok, "Log in succesful", true, {
         username: founduser.username,
         access_token: accessToken,
@@ -208,8 +213,6 @@ export class AuthController {
         },
       });
 
-      console.log("found user: ", founduser);
-
       // check for token in wrong hands
       if (!founduser) {
         jwt.verify(
@@ -217,8 +220,6 @@ export class AuthController {
           process.env.REFRESH_TOKEN_SECRET as string,
           async (error: unknown, decode: unknown) => {
             if (error) {
-              console.log(error);
-
               return;
             }
             const { userId } = decode as { userId: string };
@@ -227,7 +228,7 @@ export class AuthController {
                 id: userId,
               },
             });
-            console.log("possible user: ", possibleUser);
+            //og("possible user: ", possibleUser);
             if (possibleUser) {
               await prisma.user.update({
                 where: {
