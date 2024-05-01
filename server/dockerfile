@@ -1,7 +1,7 @@
 FROM node:alpine
 WORKDIR /
 COPY package*.json ./
-RUN npm install
+RUN npm run install
 COPY . .
 RUN npm run build
 EXPOSE 9090
