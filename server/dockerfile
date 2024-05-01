@@ -1,6 +1,7 @@
 FROM node:alpine
 WORKDIR /
 COPY package*.json ./
+RUN npm cache clean --force
 RUN npm run install
 COPY . .
 RUN npm run build
